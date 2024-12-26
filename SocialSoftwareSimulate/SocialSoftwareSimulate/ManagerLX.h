@@ -70,6 +70,8 @@ public:
 
     // 获取所有群组
     map<int, vector<string>> getAllGroups() const;
+
+    vector<int> getGroups(const string& userID) const;
 };
 
 // 派生类：QQ群聊管理类

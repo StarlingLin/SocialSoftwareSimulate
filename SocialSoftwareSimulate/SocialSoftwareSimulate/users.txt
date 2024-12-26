@@ -1,0 +1,2 @@
+abc,abc,2000-01-01,1,Ä¬ÈÏÎ»ÖÃ
+starling,starling,2004-09-03,12,NanJing

@@ -30,6 +30,8 @@ public:
 
     // 检查是否为群主
     virtual bool isOwner(const string& serviceName, int groupID, const string& userID) const;
+
+    vector<int> getGroups(const string& serviceName, const string& userID) const;
 };
 
 // 派生类：仅群主管理的群

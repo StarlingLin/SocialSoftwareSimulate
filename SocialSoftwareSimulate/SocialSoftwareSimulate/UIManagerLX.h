@@ -3,9 +3,12 @@
 #include <stack>
 #include <string>
 #include <iostream>
+#include "UserLX.h"
 #include "LoggerLX.h"
 #include "ManagerLX.h"
 #include "DatabaseLX.h"
+#include "FriendLX.h"
+#include "GroupLX.h"
 
 using namespace std;
 
@@ -17,6 +20,7 @@ private:
     UserManagerLX* userManager;       // 用户管理器
     ServiceManagerLX* serviceManager; // 服务管理器
     GroupManagerLX* groupManager;     // 群组管理器
+    FriendLX friendManager;           // 好友管理器
     DatabaseLX* database;             // 数据库管理器
 
     string currentService;            // 当前进入的服务名称
@@ -29,6 +33,9 @@ private:
     void displayServiceMenu();        // 显示服务菜单
     void displayUserManagementMenu(); // 显示用户管理菜单
     void displayGroupManagementMenu();// 显示群组管理菜单
+
+    void displayUserInfo();           // 显示用户信息
+    void modifyUserInfo();            // 修改用户信息
 
 public:
     UIManagerLX(LoggerLX* logger, UserManagerLX* userManager, ServiceManagerLX* serviceManager, GroupManagerLX* groupManager, DatabaseLX* database);

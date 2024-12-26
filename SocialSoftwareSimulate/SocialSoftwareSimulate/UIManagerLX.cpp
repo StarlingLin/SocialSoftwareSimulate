@@ -9,6 +9,8 @@ void UIManagerLX::start()
 {
     // 加载服务数据
     database->loadServices(serviceManager);
+    database->loadGroups(groupManager);
+    database->loadUsers(*userManager);
 
     pageStack.push("Main Menu");
     while (!pageStack.empty())
@@ -122,6 +124,10 @@ void UIManagerLX::displayRegisterMenu()
     {
         userManager->addUser(username, nickname, "2000-01-01", "1", "默认位置");
         passwdManager.setPassword(username, password);
+
+        // 保存用户信息到本地文件
+        database->saveUsers(*userManager);
+
         logger->log("用户 " + username + " 注册成功。");
         cout << "注册成功！" << endl;
         pageStack.pop();
@@ -132,6 +138,7 @@ void UIManagerLX::displayRegisterMenu()
         cout << "用户名已存在，请重试。" << endl;
     }
 }
+
 
 void UIManagerLX::displayServiceSelectionMenu()
 {
@@ -216,8 +223,8 @@ void UIManagerLX::displayServiceMenu()
     system("cls");
     cout << "欢迎进入 " << currentService << " 服务菜单！" << endl;
     cout << "1. 查看个人信息" << endl;
-    cout << "2. 查看好友列表" << endl;
-    cout << "3. 查看群组信息" << endl;
+    cout << "2. 用户管理" << endl;
+    cout << "3. 群组管理" << endl;
     cout << "4. 返回服务选择" << endl;
     int choice;
     cin >> choice;
@@ -225,25 +232,16 @@ void UIManagerLX::displayServiceMenu()
     switch (choice)
     {
     case 1:
-        cout << "个人信息：" << endl;
-        cout << "昵称: " << serviceManager->getService(currentService)->getNickname(loggedInUser) << endl;
-        logger->log("用户查看了个人信息。");
+		pageStack.push("User Info");
+        displayUserInfo();
         break;
     case 2:
-        cout << "好友列表：" << endl;
-        for (const string& friendID : serviceManager->getService(currentService)->getFriends(loggedInUser))
-        {
-            cout << friendID << endl;
-        }
-        logger->log("用户查看了好友列表。");
+        pageStack.push("User Management");
+        displayUserManagementMenu();
         break;
     case 3:
-        cout << "群组信息：" << endl;
-        for (int groupID : serviceManager->getService(currentService)->getGroups(loggedInUser))
-        {
-            cout << "群组ID: " << groupID << endl;
-        }
-        logger->log("用户查看了群组信息。");
+        pageStack.push("Group Management");
+        displayGroupManagementMenu();
         break;
     case 4:
         pageStack.pop();
@@ -254,34 +252,125 @@ void UIManagerLX::displayServiceMenu()
     }
 }
 
+void UIManagerLX::displayUserInfo()
+{
+    system("cls");
+    cout << "用户个人信息：" << endl;
+    UserLX* user = userManager->getUser(loggedInUser);
+    if (user)
+    {
+        cout << "用户ID: " << user->getQQID() << endl;
+        cout << "昵称: " << user->getNickname() << endl;
+        cout << "出生时间: " << user->getBirthDate() << endl;
+        cout << "号码申请时间: " << user->getTAge() << endl;
+        cout << "所在地: " << user->getLocation() << endl;
+    }
+    else
+    {
+        cout << "未找到用户信息。" << endl;
+    }
+
+    cout << "\n1. 返回" << endl;
+    cout << "2. 修改信息" << endl;
+    int choice;
+    cin >> choice;
+    switch (choice)
+    {
+    case 1:
+        pageStack.pop();
+        break;
+    case 2:
+        modifyUserInfo();
+        break;
+    default:
+        cout << "无效选项，请重试。" << endl;
+        break;
+    }
+}
+
+void UIManagerLX::modifyUserInfo()
+{
+    system("cls");
+    cout << "修改用户信息：" << endl;
+    cout << "请输入新的昵称：";
+    string newNickname;
+    cin >> newNickname;
+    cout << "请输入新的所在地：";
+    string newLocation;
+    cin >> newLocation;
+	cout << "请输入新的出生时间：";
+	string newBirthDate;
+	cin >> newBirthDate;
+    UserLX* user = userManager->getUser(loggedInUser);
+	cout << "请输入新的号码申请时间：";
+	string newTAge;
+	cin >> newTAge;
+    if (user)
+    {
+        user->setNickname(newNickname);
+        user->setLocation(newLocation);
+		user->setBirthDate(newBirthDate);
+		user->setTAge(newTAge);
+        cout << "信息修改成功！" << endl;
+        logger->log("用户修改了个人信息。");
+		database->saveUsers(*userManager);
+    }
+    else
+    {
+        cout << "未找到用户信息。" << endl;
+    }
+
+	system("pause");
+	pageStack.pop();
+}
+
 void UIManagerLX::displayUserManagementMenu()
 {
     system("cls");
-    cout << "\n===== 用户管理菜单 =====" << endl;
-    cout << "1. 添加用户" << endl;
-    cout << "2. 移除用户" << endl;
-    cout << "3. 显示所有用户" << endl;
-    cout << "0. 返回主菜单" << endl;
-    cout << "=======================" << endl;
-    cout << "请输入选项: ";
+    cout << "用户管理菜单" << endl;
+    cout << "1. 添加好友" << endl;
+    cout << "2. 删除好友" << endl;
+    cout << "3. 查看好友列表" << endl;
+    cout << "4. 返回" << endl;
+
     int choice;
     cin >> choice;
 
     switch (choice)
     {
     case 1:
-        // 调用添加用户逻辑
+    {
+        cout << "请输入好友ID: ";
+        string friendID;
+        cin >> friendID;
+        friendManager.addFriend(currentService, loggedInUser, friendID);
+        cout << "好友添加成功！" << endl;
         break;
+    }
     case 2:
-        // 调用移除用户逻辑
+    {
+        cout << "请输入要删除的好友ID: ";
+        string friendID;
+        cin >> friendID;
+        friendManager.removeFriend(currentService, loggedInUser, friendID);
+        cout << "好友删除成功！" << endl;
         break;
+    }
     case 3:
-        // 调用显示所有用户逻辑
+    {
+        cout << "好友列表：" << endl;
+        auto friends = friendManager.getFriends(currentService, loggedInUser);
+        for (const auto& friendID : friends)
+        {
+            cout << friendID << endl;
+        }
         break;
-    case 0:
-        return;
+    }
+    case 4:
+        pageStack.pop();
+        break;
     default:
-        cout << "无效选项，请重试。" << endl;
+        cout << "无效选项，请重新选择。" << endl;
         break;
     }
 }
@@ -289,31 +378,71 @@ void UIManagerLX::displayUserManagementMenu()
 void UIManagerLX::displayGroupManagementMenu()
 {
     system("cls");
-    cout << "\n===== 群组管理菜单 =====" << endl;
-    cout << "1. 创建群组" << endl;
-    cout << "2. 解散群组" << endl;
-    cout << "3. 显示所有群组" << endl;
-    cout << "0. 返回主菜单" << endl;
-    cout << "=======================" << endl;
-    cout << "请输入选项: ";
+    cout << "群组管理菜单" << endl;
+    cout << "1. 查看群组" << endl;
+    cout << "2. 加入群组" << endl;
+    cout << "3. 退出群组" << endl;
+    cout << "4. 返回" << endl;
+
     int choice;
     cin >> choice;
 
     switch (choice)
     {
     case 1:
-        // 调用创建群组逻辑
+    {
+        cout << "您已加入的群组：" << endl;
+        if (groupManager)
+        {
+            auto groups = groupManager->getGroups(loggedInUser);
+            for (const auto& groupID : groups)
+            {
+                cout << "群组ID: " << groupID << endl;
+            }
+        }
+        else
+        {
+            cout << "无法获取群组信息！" << endl;
+        }
         break;
+    }
     case 2:
-        // 调用解散群组逻辑
+    {
+        cout << "请输入要加入的群组ID: ";
+        int groupID;
+        cin >> groupID;
+        if (groupManager)
+        {
+            groupManager->joinGroup(groupID, loggedInUser);
+            cout << "加入群组成功！" << endl;
+        }
+        else
+        {
+            cout << "无法加入群组！" << endl;
+        }
         break;
+    }
     case 3:
-        // 调用显示所有群组逻辑
+    {
+        cout << "请输入要退出的群组ID: ";
+        int groupID;
+        cin >> groupID;
+        if (groupManager)
+        {
+            groupManager->leaveGroup(groupID, loggedInUser);
+            cout << "退出群组成功！" << endl;
+        }
+        else
+        {
+            cout << "无法退出群组！" << endl;
+        }
         break;
-    case 0:
-        return;
+    }
+    case 4:
+        pageStack.pop();
+        break;
     default:
-        cout << "无效选项，请重试。" << endl;
+        cout << "无效选项，请重新选择。" << endl;
         break;
     }
 }

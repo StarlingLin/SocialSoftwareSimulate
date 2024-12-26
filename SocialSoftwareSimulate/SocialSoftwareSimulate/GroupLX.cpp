@@ -41,6 +41,23 @@ bool BaseGroupLX::isOwner(const string& serviceName, int groupID, const string& 
     return false;
 }
 
+vector<int> BaseGroupLX::getGroups(const string& serviceName, const string& userID) const
+{
+    vector<int> userGroups;
+    auto serviceIt = serviceGroupMembers.find(serviceName);
+    if (serviceIt != serviceGroupMembers.end())
+    {
+        for (const auto& group : serviceIt->second)
+        {
+            if (find(group.second.begin(), group.second.end(), userID) != group.second.end())
+            {
+                userGroups.push_back(group.first);
+            }
+        }
+    }
+    return userGroups;
+}
+
 // OwnerOnlyGroupLX
 void OwnerOnlyGroupLX::createGroup(const string& serviceName, int groupID, const string& ownerID)
 {

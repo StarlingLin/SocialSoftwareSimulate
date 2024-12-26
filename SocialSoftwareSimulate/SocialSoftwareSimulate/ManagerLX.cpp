@@ -131,6 +131,19 @@ map<int, vector<string>> GroupManagerLX::getAllGroups() const
     return groups;
 }
 
+vector<int> GroupManagerLX::getGroups(const string& userID) const
+{
+    vector<int> userGroups;
+    for (const auto& group : groups)
+    {
+        if (find(group.second.begin(), group.second.end(), userID) != group.second.end())
+        {
+            userGroups.push_back(group.first);
+        }
+    }
+    return userGroups;
+}
+
 // QQGroupManagerLX
 void QQGroupManagerLX::addAdmin(int groupID, const string& userID)
 {
