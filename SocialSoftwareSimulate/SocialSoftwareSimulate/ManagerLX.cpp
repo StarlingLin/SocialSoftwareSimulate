@@ -256,6 +256,26 @@ bool ServiceManagerLX::isServiceEnabled(const string& userID, const string& serv
     return false;
 }
 
+string ServiceManagerLX::getNickname(const string& serviceName, const string& userID) const
+{
+    auto it = services.find(serviceName);
+    if (it != services.end() && it->second)
+    {
+        return it->second->getUserNickname(userID);
+    }
+    return "";
+}
+
+void ServiceManagerLX::updateNickname(const string& serviceName, const string& userID, const string& newNickname)
+{
+    auto it = services.find(serviceName);
+    if (it != services.end() && it->second)
+    {
+        it->second->updateUserNickname(userID, newNickname); // 使用 ServiceLX 提供的接口
+    }
+}
+
+
 // QQServiceManagerLX
 void QQServiceManagerLX::displayAllServices() const
 {

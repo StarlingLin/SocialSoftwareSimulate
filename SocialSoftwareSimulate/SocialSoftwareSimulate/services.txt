@@ -1,3 +1,4 @@
 starling,MicroA,starlingva
 starling,MicroB,starlingvb
+starling,QQ,star
 starling,WeChat,starlingvx

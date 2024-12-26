@@ -131,6 +131,9 @@ public:
 
     // 检查服务是否启用
     virtual bool isServiceEnabled(const string& userID, const string& serviceName) const;
+    
+    string getNickname(const string& serviceName, const string& userID) const;
+    void updateNickname(const string& serviceName, const string& userID, const string& newNickname);
 };
 
 // 派生类：QQ服务管理类

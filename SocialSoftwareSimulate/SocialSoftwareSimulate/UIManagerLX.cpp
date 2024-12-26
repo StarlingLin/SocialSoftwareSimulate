@@ -255,12 +255,24 @@ void UIManagerLX::displayServiceMenu()
 void UIManagerLX::displayUserInfo()
 {
     system("cls");
+    cout << "当前服务: " << currentService << endl;
     cout << "用户个人信息：" << endl;
+
     UserLX* user = userManager->getUser(loggedInUser);
     if (user)
     {
-        cout << "用户ID: " << user->getQQID() << endl;
-        cout << "昵称: " << user->getNickname() << endl;
+        if (currentService == "QQ")
+        {
+			cout << "QQ昵称: " << serviceManager->getNickname(currentService, loggedInUser) << endl;
+        }
+        else if (currentService == "WeChat")
+        {
+            cout << "微信昵称: " << serviceManager->getNickname(currentService, loggedInUser) << endl;
+        }
+        else if (currentService == "MicroA" || currentService == "MicroB")
+        {
+            cout << currentService << " 用户昵称: " << serviceManager->getNickname(currentService, loggedInUser) << endl;
+        }
         cout << "出生时间: " << user->getBirthDate() << endl;
         cout << "号码申请时间: " << user->getTAge() << endl;
         cout << "所在地: " << user->getLocation() << endl;
@@ -288,41 +300,77 @@ void UIManagerLX::displayUserInfo()
     }
 }
 
+
 void UIManagerLX::modifyUserInfo()
 {
     system("cls");
     cout << "修改用户信息：" << endl;
-    cout << "请输入新的昵称：";
-    string newNickname;
-    cin >> newNickname;
-    cout << "请输入新的所在地：";
-    string newLocation;
-    cin >> newLocation;
-	cout << "请输入新的出生时间：";
-	string newBirthDate;
-	cin >> newBirthDate;
+    cout << "1. 修改昵称" << endl;
+    cout << "2. 修改出生日期" << endl;
+    cout << "3. 修改所在地" << endl;
+    cout << "4. 返回" << endl;
+
+    int choice;
+    cin >> choice;
+
     UserLX* user = userManager->getUser(loggedInUser);
-	cout << "请输入新的号码申请时间：";
-	string newTAge;
-	cin >> newTAge;
     if (user)
     {
-        user->setNickname(newNickname);
-        user->setLocation(newLocation);
-		user->setBirthDate(newBirthDate);
-		user->setTAge(newTAge);
-        cout << "信息修改成功！" << endl;
-        logger->log("用户修改了个人信息。");
-		database->saveUsers(*userManager);
+        switch (choice)
+        {
+        case 1:
+        {
+            cout << "请输入新的昵称：";
+            string newNickname;
+            cin >> newNickname;
+            if (currentService == "QQ" || currentService == "WeChat" || currentService == "MicroA" || currentService == "MicroB")
+            {
+                serviceManager->updateNickname(currentService, loggedInUser, newNickname);
+                database->saveServices(serviceManager);
+            }
+            else
+            {
+                user->setNickname(newNickname);
+                database->saveUsers(*userManager);
+            }
+            cout << "昵称修改成功！" << endl;
+            break;
+        }
+        case 2:
+        {
+            cout << "请输入新的出生日期（格式：YYYY-MM-DD）：";
+            string newBirthDate;
+            cin >> newBirthDate;
+            user->setBirthDate(newBirthDate);
+            database->saveUsers(*userManager);
+            cout << "出生日期修改成功！" << endl;
+            break;
+        }
+        case 3:
+        {
+            cout << "请输入新的所在地：";
+            string newLocation;
+            cin >> newLocation;
+            user->setLocation(newLocation);
+            database->saveUsers(*userManager);
+            cout << "所在地修改成功！" << endl;
+            break;
+        }
+        case 4:
+            pageStack.pop();
+            break;
+        default:
+            cout << "无效选项，请重试。" << endl;
+            break;
+        }
     }
     else
     {
-        cout << "未找到用户信息。" << endl;
+        cout << "未找到用户信息，无法修改。" << endl;
     }
-
-	system("pause");
 	pageStack.pop();
 }
+
 
 void UIManagerLX::displayUserManagementMenu()
 {
@@ -345,6 +393,7 @@ void UIManagerLX::displayUserManagementMenu()
         cin >> friendID;
         friendManager.addFriend(currentService, loggedInUser, friendID);
         cout << "好友添加成功！" << endl;
+		system("pause");
         break;
     }
     case 2:
@@ -354,6 +403,7 @@ void UIManagerLX::displayUserManagementMenu()
         cin >> friendID;
         friendManager.removeFriend(currentService, loggedInUser, friendID);
         cout << "好友删除成功！" << endl;
+		system("pause");
         break;
     }
     case 3:
@@ -364,6 +414,7 @@ void UIManagerLX::displayUserManagementMenu()
         {
             cout << friendID << endl;
         }
+        system("pause");
         break;
     }
     case 4:
@@ -371,6 +422,7 @@ void UIManagerLX::displayUserManagementMenu()
         break;
     default:
         cout << "无效选项，请重新选择。" << endl;
+		system("pause");
         break;
     }
 }
@@ -404,6 +456,7 @@ void UIManagerLX::displayGroupManagementMenu()
         {
             cout << "无法获取群组信息！" << endl;
         }
+		system("pause");
         break;
     }
     case 2:
@@ -420,6 +473,7 @@ void UIManagerLX::displayGroupManagementMenu()
         {
             cout << "无法加入群组！" << endl;
         }
+		system("pause");
         break;
     }
     case 3:
@@ -436,6 +490,7 @@ void UIManagerLX::displayGroupManagementMenu()
         {
             cout << "无法退出群组！" << endl;
         }
+		system("pause");
         break;
     }
     case 4:

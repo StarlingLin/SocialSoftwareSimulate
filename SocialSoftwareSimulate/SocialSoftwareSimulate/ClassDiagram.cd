@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access">
+  <Class Name="CommunicationSystemLX" Collapsed="true">
+    <Position X="6.5" Y="5.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AIAAAgAACIAAAABDAAEAAAAAAAAAAAAQAAAAAAAAAEA=</HashCode>
+      <FileName>CommunicationSystemLX.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserManagerLX" Collapsed="true">
+    <Position X="5.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAABAIABAAAAAAAEAAAAAAAAAQAAAAAAIBABAAA=</HashCode>
+      <FileName>ManagerLX.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserLX" Collapsed="true">
+    <Position X="8.75" Y="4" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAIQQCCWBEAMEAABBIEMFQQCACIABQAAAEAAAQABAQA=</HashCode>
+      <FileName>UserLX.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FriendLX" Collapsed="true">
+    <Position X="8.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAIAAAAAAgAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>FriendLX.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseGroupLX" Collapsed="true">
+    <Position X="1.75" Y="6.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAgAAEAIAABAgAAAAAAAAAAABABAAAAAA=</HashCode>
+      <FileName>GroupLX.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OwnerOnlyGroupLX" Collapsed="true">
+    <Position X="0.5" Y="7.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>GroupLX.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OwnerAndAdminGroupLX" Collapsed="true">
+    <Position X="2.75" Y="7.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAEAAAAABAAACAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>GroupLX.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GroupManagerLX" Collapsed="true">
+    <Position X="7" Y="0.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QAAAACAAAIAAQAAEAICABAAAAAAAAIAAAAAABAAAAAA=</HashCode>
+      <FileName>ManagerLX.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ServiceManagerLX" Collapsed="true">
+    <Position X="1.75" Y="3.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAEAAAAAIQAAAQAAQAAIAAEUIAAAAA=</HashCode>
+      <FileName>ManagerLX.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ServiceLX" Collapsed="true">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAUQAEIIEAQRAEiAIIMBBAoBAAAAAAQAAAABRABAAA=</HashCode>
+      <FileName>ServiceLX.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QQServiceLX" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>EAAQAAAAIAAAAAACAAAAADAIACAAAAAEAAAAABAAAAA=</HashCode>
+      <FileName>ServiceLX.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WXServiceLX" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AABQAAAAIAAAAAACAAAAAAAIAAAAAAAAAAAEABAAAAA=</HashCode>
+      <FileName>ServiceLX.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QQGroupManagerLX" Collapsed="true">
+    <Position X="5.5" Y="1.75" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAABAAACAAAIAEAAAAAAAAAAA=</HashCode>
+      <FileName>ManagerLX.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WXGroupManagerLX" Collapsed="true">
+    <Position X="8" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>ManagerLX.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QQServiceManagerLX" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ManagerLX.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WXServiceManagerLX" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ManagerLX.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DatabaseLX" Collapsed="true">
+    <Position X="7" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAABAIAAAAAAAAgAAAEAAAAACAAA=</HashCode>
+      <FileName>DatabaseLX.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoggerLX" Collapsed="true">
+    <Position X="5.25" Y="4" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAgCAAgAgAAAAIAAAAAAAAAAgA=</HashCode>
+      <FileName>LoggerLX.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UIManagerLX" Collapsed="true">
+    <Position X="7" Y="4" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AICIAEAECIAAAiBiAAAAAgAAACAAAAAAAAEgASAAAAA=</HashCode>
+      <FileName>UIManagerLX.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

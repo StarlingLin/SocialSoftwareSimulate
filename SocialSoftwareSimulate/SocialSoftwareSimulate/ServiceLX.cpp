@@ -209,6 +209,18 @@ string QQServiceLX::getNickname(const string& userID) const
     return ServiceLX::getNickname(userID);
 }
 
+string ServiceLX::getUserNickname(const string& userID) const
+{
+    auto it = userNicknames.find(userID);
+    return it != userNicknames.end() ? it->second : "";
+}
+
+void ServiceLX::updateUserNickname(const string& userID, const string& newNickname)
+{
+    userNicknames[userID] = newNickname;
+}
+
+
 // WXServiceLX¹¹Ôìº¯Êý
 WXServiceLX::WXServiceLX()
     : ServiceLX("WeChat", false)

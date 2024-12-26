@@ -58,6 +58,9 @@ public:
     // 检查服务是否启用
     bool isActive() const;
 
+    string getUserNickname(const string& userID) const;
+    void updateUserNickname(const string& userID, const string& newNickname);
+
     virtual ~ServiceLX() = default;
 };
 
