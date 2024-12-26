@@ -30,12 +30,6 @@
     <ClCompile Include="FriendLX.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="AdminMenuLX.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="UserMenuLX.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="ManagerLX.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -46,6 +40,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="LoggerLX.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManagerLX.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PasswdLX.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,12 +62,6 @@
     <ClInclude Include="FriendLX.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="AdminMenuLX.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="UserMenuLX.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="ManagerLX.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -78,6 +72,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="LoggerLX.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManagerLX.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PasswdLX.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

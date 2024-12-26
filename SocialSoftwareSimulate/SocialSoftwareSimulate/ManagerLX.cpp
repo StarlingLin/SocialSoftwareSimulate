@@ -50,6 +50,30 @@ map<string, UserLX> UserManagerLX::getAllUsers() const
     return users;
 }
 
+void UserManagerLX::bindService(const string& userID, const string& serviceName)
+{
+    auto it = users.find(userID);
+    if (it != users.end())
+    {
+        it->second.bindToService(serviceName);
+        cout << "用户 " << userID << " 已绑定服务 " << serviceName << "。" << endl;
+    }
+    else
+    {
+        cout << "用户 " << userID << " 未找到，无法绑定服务。" << endl;
+    }
+}
+
+bool UserManagerLX::isServiceBound(const string& userID, const string& serviceName) const
+{
+    auto it = users.find(userID);
+    if (it != users.end())
+    {
+        return it->second.isBoundToService(serviceName);
+    }
+    return false;
+}
+
 // GroupManagerLX
 void GroupManagerLX::createGroup(int groupID)
 {
@@ -186,6 +210,35 @@ void ServiceManagerLX::displayAllServices() const
 map<string, ServiceLX*> ServiceManagerLX::getAllServices() const
 {
     return services;
+}
+
+void ServiceManagerLX::registerService(const string& userID, const string& serviceName, bool bindToQQID, const string& nickname)
+{
+    auto it = services.find(serviceName);
+    if (it == services.end())
+    {
+        cout << "服务 " << serviceName << " 未找到，无法注册。" << endl;
+        return;
+    }
+
+    if (bindToQQID)
+    {
+        cout << "用户 " << userID << " 通过绑定QQ ID 注册了服务 " << serviceName << "。" << endl;
+    }
+    else
+    {
+        cout << "用户 " << userID << " 使用新ID注册了服务 " << serviceName << "，昵称为 " << nickname << "。" << endl;
+    }
+}
+
+bool ServiceManagerLX::isServiceEnabled(const string& userID, const string& serviceName) const
+{
+    auto service = services.find(serviceName);
+    if (service != services.end())
+    {
+        return service->second->isUserBound(userID);
+    }
+    return false;
 }
 
 // QQServiceManagerLX

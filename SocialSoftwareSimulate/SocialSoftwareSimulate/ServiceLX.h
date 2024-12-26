@@ -24,6 +24,9 @@ public:
     virtual void logoutUser(const string& userID);
     virtual bool isUserLoggedIn(const string& userID) const;
 
+    // 检查用户是否绑定服务
+    virtual bool isUserBound(const string& userID) const;
+
     // 好友管理
     virtual void addFriend(const string& userID, const string& friendID);
     virtual void removeFriend(const string& userID, const string& friendID);

@@ -32,6 +32,12 @@ public:
 
     // 获取所有用户
     map<string, UserLX> getAllUsers() const;
+
+    // 绑定服务到用户
+    void bindService(const string& userID, const string& serviceName);
+
+    // 检查用户是否绑定了某服务
+    bool isServiceBound(const string& userID, const string& serviceName) const;
 };
 
 // 基类：群聊管理类
@@ -112,6 +118,12 @@ public:
 
     // 获取所有服务
     map<string, ServiceLX*> getAllServices() const;
+
+    // 注册服务
+    virtual void registerService(const string& userID, const string& serviceName, bool bindToQQID, const string& nickname);
+
+    // 检查服务是否启用
+    virtual bool isServiceEnabled(const string& userID, const string& serviceName) const;
 };
 
 // 派生类：QQ服务管理类

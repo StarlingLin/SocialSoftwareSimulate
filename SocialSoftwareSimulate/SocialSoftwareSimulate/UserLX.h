@@ -3,6 +3,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -34,7 +35,7 @@ public:
     string getServiceID(int serviceNumber) const;
 
     // 检查是否绑定到服务
-    bool isBoundToService(int serviceNumber) const;
+    bool isBoundToService(const string& serviceName) const;
 
     // 获取所有服务ID及绑定信息
     map<int, string> getAllServiceIDs() const;

@@ -1,7 +1,5 @@
-#pragma once
 #include "LoggerLX.h"
 #include <ctime>
-#include <iostream>
 #include <fstream>
 #include <algorithm>
 
@@ -24,7 +22,6 @@ void LoggerLX::log(const string& message)
 {
     string timeStampedMessage = getCurrentTime() + " - " + message;
     logBuffer.push_back(timeStampedMessage);
-    cout << timeStampedMessage << endl; // 打印到控制台
 }
 
 void LoggerLX::saveToFile()
@@ -53,5 +50,4 @@ void LoggerLX::clearLogFile()
         return;
     }
     outFile.close();
-    cout << "日志文件已清空: " << logFileName << endl;
 }

@@ -127,7 +127,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AdminMenuLX.cpp" />
     <ClCompile Include="CommunicationSystemLX.cpp" />
     <ClCompile Include="DatabaseLX.cpp" />
     <ClCompile Include="FriendLX.cpp" />
@@ -135,21 +134,22 @@
     <ClCompile Include="LoggerLX.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManagerLX.cpp" />
+    <ClCompile Include="PasswdLX.cpp" />
     <ClCompile Include="ServiceLX.cpp" />
+    <ClCompile Include="UIManagerLX.cpp" />
     <ClCompile Include="UserLX.cpp" />
-    <ClCompile Include="UserMenuLX.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AdminMenuLX.h" />
     <ClInclude Include="CommunicationSystemLX.h" />
     <ClInclude Include="DatabaseLX.h" />
     <ClInclude Include="FriendLX.h" />
     <ClInclude Include="GroupLX.h" />
     <ClInclude Include="LoggerLX.h" />
     <ClInclude Include="ManagerLX.h" />
+    <ClInclude Include="PasswdLX.h" />
     <ClInclude Include="ServiceLX.h" />
+    <ClInclude Include="UIManagerLX.h" />
     <ClInclude Include="UserLX.h" />
-    <ClInclude Include="UserMenuLX.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

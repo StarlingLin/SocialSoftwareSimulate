@@ -19,11 +19,11 @@ void UserLX::addServiceID(int serviceNumber, const string& id)
 {
     if (serviceIDs.find(serviceNumber) != serviceIDs.end())
     {
-        cout << "服务ID " << serviceNumber << " 已绑实，绑实ID为：" << serviceIDs[serviceNumber] << endl;
+        cout << "服务ID " << serviceNumber << " 已绑定，绑定ID为：" << serviceIDs[serviceNumber] << endl;
         return;
     }
     serviceIDs[serviceNumber] = id;
-    cout << "服务ID " << serviceNumber << " 绑实成功，绑实ID为：" << id << endl;
+    cout << "服务ID " << serviceNumber << " 绑定成功，绑定ID为：" << id << endl;
 }
 
 // 查询服务ID
@@ -37,13 +37,13 @@ string UserLX::getServiceID(int serviceNumber) const
     return qqID; // 返回统一ID作为默认值
 }
 
-// 检查是否绑实到服务
-bool UserLX::isBoundToService(int serviceNumber) const
+// 检查是否绑定到服务
+bool UserLX::isBoundToService(const string& serviceName) const
 {
-    return serviceIDs.find(serviceNumber) != serviceIDs.end();
+    return find(boundServices.begin(), boundServices.end(), serviceName) != boundServices.end();
 }
 
-// 获取所有服务ID及绑实信息
+// 获取所有服务ID及绑定信息
 map<int, string> UserLX::getAllServiceIDs() const
 {
     return serviceIDs;
@@ -58,11 +58,11 @@ void UserLX::removeServiceID(int serviceNumber)
     }
     else
     {
-        cout << "服务ID " << serviceNumber << " 未绑实。" << endl;
+        cout << "服务ID " << serviceNumber << " 未绑定。" << endl;
     }
 }
 
-// 绑实服务到用户
+// 绑定服务到用户
 void UserLX::bindToService(const string& serviceName)
 {
     if (find(boundServices.begin(), boundServices.end(), serviceName) == boundServices.end())
@@ -71,7 +71,7 @@ void UserLX::bindToService(const string& serviceName)
     }
 }
 
-// 获取用户绑实的所有服务
+// 获取用户绑定的所有服务
 vector<string> UserLX::getAllBoundServices() const
 {
     return boundServices;
@@ -137,13 +137,13 @@ void UserLX::displayUserInfo() const
         cout << "群组ID: " << groupID << endl;
     }
 
-    cout << "绑实的服务：" << endl;
+    cout << "绑定的服务：" << endl;
     for (const auto& service : serviceIDs)
     {
-        cout << "服务ID: " << service.first << ", 绑实ID: " << service.second << endl;
+        cout << "服务ID: " << service.first << ", 绑定ID: " << service.second << endl;
     }
 
-    cout << "已绑实的服务名称：" << endl;
+    cout << "已绑定的服务名称：" << endl;
     for (const auto& service : boundServices)
     {
         cout << "服务名称: " << service << endl;

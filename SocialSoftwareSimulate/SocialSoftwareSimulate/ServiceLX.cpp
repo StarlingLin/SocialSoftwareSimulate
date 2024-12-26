@@ -24,6 +24,10 @@ bool ServiceLX::isUserLoggedIn(const string& userID) const {
     return it != userLoginStatus.end() && it->second;
 }
 
+bool ServiceLX::isUserBound(const string& userID) const {
+    return userLoginStatus.find(userID) != userLoginStatus.end();
+}
+
 void ServiceLX::addFriend(const string& userID, const string& friendID) {
     if (find(userFriends[userID].begin(), userFriends[userID].end(), friendID) == userFriends[userID].end()) {
         userFriends[userID].push_back(friendID);
