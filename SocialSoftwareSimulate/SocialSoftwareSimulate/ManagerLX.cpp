@@ -223,31 +223,12 @@ void ServiceManagerLX::registerService(const string& userID, const string& servi
 
     if (bindToQQID)
     {
-        it->second->registerUser(userID, "", nickname);
+        it->second->registerUser(userID, serviceName, nickname);
         cout << "用户 " << userID << " 通过绑定QQ ID 注册了服务 " << serviceName << "，昵称为 " << nickname << "。" << endl;
     }
     else
     {
-        it->second->registerUser(userID, userID, nickname);
-        cout << "用户 " << userID << " 使用新ID注册了服务 " << serviceName << "，昵称为 " << nickname << "。" << endl;
-    }
-}
-{
-    auto it = services.find(serviceName);
-    if (it == services.end())
-    {
-        cout << "服务 " << serviceName << " 未找到，无法注册。" << endl;
-        return;
-    }
-
-    it->second->registerUser(userID, bindToQQID ? "" : nickname);
-
-    if (bindToQQID)
-    {
-        cout << "用户 " << userID << " 通过绑定QQ ID 注册了服务 " << serviceName << "。" << endl;
-    }
-    else
-    {
+        it->second->registerUser(userID, serviceName, nickname);
         cout << "用户 " << userID << " 使用新ID注册了服务 " << serviceName << "，昵称为 " << nickname << "。" << endl;
     }
 }

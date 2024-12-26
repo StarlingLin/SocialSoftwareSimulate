@@ -22,8 +22,8 @@ int main() {
     // 添加服务
     serviceManager.addService("QQ", new QQServiceLX());         // QQ 服务
     serviceManager.addService("WeChat", new WXServiceLX());     // 微信服务
-    serviceManager.addService("MicroA", new QQServiceLX());     // 微A服务（使用QQ服务逻辑）
-    serviceManager.addService("MicroB", new WXServiceLX());     // 微B服务（使用微信服务逻辑）
+    serviceManager.addService("MicroA", new ServiceLX("MicroA", true));     // 微A服务（使用QQ服务逻辑）
+    serviceManager.addService("MicroB", new ServiceLX("MicroB", false));     // 微B服务（使用微信服务逻辑）
 
     // 初始化 UI 管理器
     UIManagerLX uiManager(&logger, &userManager, &serviceManager, &groupManager, &database);

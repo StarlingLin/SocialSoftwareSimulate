@@ -1,6 +1,7 @@
 #include "DatabaseLX.h"
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -10,13 +11,21 @@ void DatabaseLX::loadUsers(UserManagerLX& userManager)
     ifstream inFile("users.txt");
     if (!inFile)
     {
-        cout << "无法打开用户数据文件进行加载。" << endl;
+        cout << "用户数据文件不存在，加载跳过。" << endl;
         return;
     }
 
-    string userID, nickname, birthDate, tAge, location;
-    while (inFile >> userID >> nickname >> birthDate >> tAge >> location)
+    string line;
+    while (getline(inFile, line))
     {
+        stringstream ss(line);
+        string userID, nickname, birthDate, tAge, location;
+        getline(ss, userID, ',');
+        getline(ss, nickname, ',');
+        getline(ss, birthDate, ',');
+        getline(ss, tAge, ',');
+        getline(ss, location, ',');
+
         userManager.addUser(userID, nickname, birthDate, tAge, location);
     }
 
@@ -34,11 +43,14 @@ void DatabaseLX::saveUsers(const UserManagerLX& userManager)
         return;
     }
 
-    for (const auto& user : userManager.getAllUsers())
+    for (const auto& userPair : userManager.getAllUsers())
     {
-        outFile << user.first << " " << user.second.getNickname() << " "
-            << user.second.getBirthDate() << " " << user.second.getTAge() << " "
-            << user.second.getLocation() << endl;
+        const UserLX& user = userPair.second;
+        outFile << user.getQQID() << ","
+            << user.getNickname() << ","
+            << user.getBirthDate() << ","
+            << user.getTAge() << ","
+            << user.getLocation() << endl;
     }
 
     outFile.close();
@@ -51,15 +63,29 @@ void DatabaseLX::loadGroups(GroupManagerLX* groupManager)
     ifstream inFile("groups.txt");
     if (!inFile)
     {
-        cout << "无法打开群组数据文件进行加载。" << endl;
+        cout << "群组数据文件不存在，加载跳过。" << endl;
         return;
     }
 
-    int groupID;
-    string userID;
-    while (inFile >> groupID >> userID)
+    string line;
+    while (getline(inFile, line))
     {
-        groupManager->joinGroup(groupID, userID);
+        stringstream ss(line);
+        int groupID;
+        ss >> groupID;
+
+        vector<string> members;
+        string memberID;
+        while (ss >> memberID)
+        {
+            members.push_back(memberID);
+        }
+
+        groupManager->createGroup(groupID);
+        for (const auto& member : members)
+        {
+            groupManager->joinGroup(groupID, member);
+        }
     }
 
     inFile.close();
@@ -78,10 +104,12 @@ void DatabaseLX::saveGroups(const GroupManagerLX* groupManager)
 
     for (const auto& group : groupManager->getAllGroups())
     {
+        outFile << group.first;
         for (const auto& member : group.second)
         {
-            outFile << group.first << " " << member << endl;
+            outFile << " " << member;
         }
+        outFile << endl;
     }
 
     outFile.close();
@@ -94,18 +122,21 @@ void DatabaseLX::loadServices(ServiceManagerLX* serviceManager)
     ifstream inFile("services.txt");
     if (!inFile)
     {
-        cout << "无法打开服务数据文件进行加载。" << endl;
+        cout << "服务数据文件不存在，加载跳过。" << endl;
         return;
     }
 
-    string userID, serviceName, nickname;
-    while (inFile >> userID >> serviceName >> nickname)
+    string line;
+    while (getline(inFile, line))
     {
-        ServiceLX* service = serviceManager->getService(serviceName);
-        if (service)
-        {
-            service->registerUser(userID, nickname);
-        }
+        stringstream ss(line);
+        string userID, serviceName, nickname;
+        getline(ss, userID, ',');
+        getline(ss, serviceName, ',');
+        getline(ss, nickname, ',');
+
+        bool useQQID = nickname.empty(); // 如果昵称为空，认为使用 QQID
+        serviceManager->registerService(userID, serviceName, !useQQID, nickname);
     }
 
     inFile.close();
@@ -129,7 +160,7 @@ void DatabaseLX::saveServices(const ServiceManagerLX* serviceManager)
         {
             for (const auto& userID : service->getAllBoundUsers())
             {
-                outFile << userID << " " << service->getServiceName() << " " << service->getNickname(userID) << endl;
+                outFile << userID << "," << service->getServiceName() << "," << service->getNickname(userID) << endl;
             }
         }
     }

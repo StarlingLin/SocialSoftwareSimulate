@@ -1,3 +1,3 @@
-starling QQ stara
-starling WeChat 微信用户
-starling WeChat 微信用户
+starling,MicroA,starlingva
+starling,MicroB,starlingvb
+starling,WeChat,starlingvx
