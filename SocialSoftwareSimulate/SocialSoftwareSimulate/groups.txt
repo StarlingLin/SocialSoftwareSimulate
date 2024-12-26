@@ -1,0 +1,2 @@
+QQ 1001 user1 user2 user3
+WeChat 2001 user1 user4
