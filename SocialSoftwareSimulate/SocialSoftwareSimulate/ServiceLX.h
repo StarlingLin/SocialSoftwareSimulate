@@ -8,13 +8,15 @@
 using namespace std;
 
 // 基础服务类
-class ServiceLX {
+class ServiceLX
+{
 protected:
     string serviceName;                                // 服务名称
     bool usesSharedID;                                // 是否使用公用ID (qqID)
     map<string, bool> userLoginStatus;                // 用户ID -> 登录状态
     map<string, vector<string>> userFriends;          // 用户ID -> 好友列表
     map<int, vector<string>> userGroups;              // 群组ID -> 群成员
+    map<string, string> userNicknames;                // 用户ID -> 昵称
 
 public:
     ServiceLX(const string& name, bool sharedID);
@@ -44,6 +46,15 @@ public:
     // 获取所有已登录用户
     vector<string> getLoggedUsers() const;
 
+    // 注册用户
+    virtual void registerUser(const string& userID, const string& serviceID, const string& nickname);
+
+    // 获取所有绑定用户
+    virtual vector<string> getAllBoundUsers() const;
+
+    // 获取用户昵称
+    virtual string getNickname(const string& userID) const;
+
     // 检查服务是否启用
     bool isActive() const;
 
@@ -51,7 +62,8 @@ public:
 };
 
 // QQ服务类
-class QQServiceLX : public ServiceLX {
+class QQServiceLX : public ServiceLX
+{
 private:
     map<int, vector<string>> groupAdmins; // 群组管理员
 
@@ -64,10 +76,23 @@ public:
     vector<string> getAdmins(int groupID) const;
 
     void displayServiceInfo() const override;
+
+    // 用户注册
+    void registerUser(const string& userID, const string& serviceID, const string& nickname) override;
+
+    // 检查用户绑定
+    bool isUserBound(const string& userID) const override;
+
+    // 获取所有绑定用户
+    vector<string> getAllBoundUsers() const override;
+
+    // 获取用户昵称
+    string getNickname(const string& userID) const override;
 };
 
 // WX服务类
-class WXServiceLX : public ServiceLX {
+class WXServiceLX : public ServiceLX
+{
 public:
     WXServiceLX();
 
@@ -75,4 +100,16 @@ public:
     vector<string> getRecommendedFriends(const string& userID, const ServiceLX& qqService) const;
 
     void displayServiceInfo() const override;
+
+    // 用户注册
+    void registerUser(const string& userID, const string& serviceID, const string& nickname) override;
+
+    // 检查用户绑定
+    bool isUserBound(const string& userID) const override;
+
+    // 获取所有绑定用户
+    vector<string> getAllBoundUsers() const override;
+
+    // 获取用户昵称
+    string getNickname(const string& userID) const override;
 };

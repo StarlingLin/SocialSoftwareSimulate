@@ -19,7 +19,7 @@ void CommunicationSystemLX::initialize()
     database.loadServices(serviceManager);
 
     // 初始化日志
-    logger.log("系统初始化成功。", "INFO");
+    logger.log("系统初始化成功。");
 
     cout << "初始化完成。" << endl;
 }
@@ -43,8 +43,8 @@ void CommunicationSystemLX::run()
             cin >> userID;
             cout << "请输入昵称: ";
             cin >> nickname;
-            userManager.addUser(userID, nickname);
-            logger.log("用户已添加: " + userID, "INFO");
+            userManager.addUser(userID, nickname, "未知", "未知", "未知");
+            logger.log("用户已添加: " + userID);
             break;
         }
         case 2:
@@ -53,7 +53,7 @@ void CommunicationSystemLX::run()
             cout << "请输入要移除的用户ID: ";
             cin >> userID;
             userManager.removeUser(userID);
-            logger.log("用户已移除: " + userID, "INFO");
+            logger.log("用户已移除: " + userID);
             break;
         }
         case 3:
@@ -90,7 +90,7 @@ void CommunicationSystemLX::run()
                 if (qqService)
                 {
                     qqService->addFriend(userID, friendID);
-                    logger.log("好友已添加: " + friendID + " 给用户: " + userID, "INFO");
+                    logger.log("好友已添加: " + friendID + " 给用户: " + userID);
                     cout << "好友添加成功！" << endl;
                 }
             }
@@ -111,7 +111,7 @@ void CommunicationSystemLX::run()
             if (userManager.userExists(userID))
             {
                 groupManager->joinGroup(groupID, userID);
-                logger.log("用户加入群组: " + to_string(groupID), "INFO");
+                logger.log("用户加入群组: " + to_string(groupID));
                 cout << "成功加入群组！" << endl;
             }
             else
@@ -129,7 +129,7 @@ void CommunicationSystemLX::run()
     }
 
     cout << "正在退出系统..." << endl;
-    logger.log("系统退出。", "INFO");
+    logger.log("系统退出。");
 }
 
 // 系统退出
@@ -142,7 +142,7 @@ void CommunicationSystemLX::shutdown()
     database.saveGroups(groupManager);
     database.saveServices(serviceManager);
 
-    logger.log("系统关闭完成。", "INFO");
+    logger.log("系统关闭完成。");
 }
 
 // 主菜单

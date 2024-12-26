@@ -1,2 +1,0 @@
-QQ user1 user2 user3
-WeChat user1 user4 user5

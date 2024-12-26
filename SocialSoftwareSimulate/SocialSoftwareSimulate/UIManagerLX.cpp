@@ -1,12 +1,15 @@
 #include "UIManagerLX.h"
 #include "PasswdLX.h"
 
-UIManagerLX::UIManagerLX(LoggerLX* logger, UserManagerLX* userManager, ServiceManagerLX* serviceManager, GroupManagerLX* groupManager)
-    : logger(logger), userManager(userManager), serviceManager(serviceManager), groupManager(groupManager) {
+UIManagerLX::UIManagerLX(LoggerLX* logger, UserManagerLX* userManager, ServiceManagerLX* serviceManager, GroupManagerLX* groupManager, DatabaseLX* database)
+    : logger(logger), userManager(userManager), serviceManager(serviceManager), groupManager(groupManager), database(database), currentService(""), loggedInUser("") {
 }
 
 void UIManagerLX::start()
 {
+    // 加载服务数据
+    database->loadServices(serviceManager);
+
     pageStack.push("Main Menu");
     while (!pageStack.empty())
     {
@@ -40,10 +43,14 @@ void UIManagerLX::start()
             displayGroupManagementMenu();
         }
     }
+
+    // 退出前保存服务数据
+    database->saveServices(serviceManager);
 }
 
 void UIManagerLX::displayMainMenu()
 {
+    system("cls");
     cout << "欢迎来到社交模拟软件！" << endl;
     cout << "1. 登录" << endl;
     cout << "2. 注册" << endl;
@@ -73,6 +80,7 @@ void UIManagerLX::displayMainMenu()
 
 void UIManagerLX::displayLoginMenu()
 {
+    system("cls");
     PasswdLX passwdManager;
     cout << "请输入您的用户名：";
     string username;
@@ -85,6 +93,7 @@ void UIManagerLX::displayLoginMenu()
     {
         logger->log("用户 " + username + " 成功登录。");
         cout << "登录成功！" << endl;
+        loggedInUser = username;
         pageStack.pop();
         pageStack.push("Service Selection");
     }
@@ -97,6 +106,7 @@ void UIManagerLX::displayLoginMenu()
 
 void UIManagerLX::displayRegisterMenu()
 {
+    system("cls");
     PasswdLX passwdManager;
     cout << "请输入您想要注册的用户名：";
     string username;
@@ -104,10 +114,13 @@ void UIManagerLX::displayRegisterMenu()
     cout << "请输入您的密码：";
     string password;
     cin >> password;
+    cout << "请输入您的昵称：";
+    string nickname;
+    cin >> nickname;
 
     if (!passwdManager.userExists(username))
     {
-        userManager->addUser(username, username, "2000-01-01", "1", "默认位置");
+        userManager->addUser(username, nickname, "2000-01-01", "1", "默认位置");
         passwdManager.setPassword(username, password);
         logger->log("用户 " + username + " 注册成功。");
         cout << "注册成功！" << endl;
@@ -122,6 +135,7 @@ void UIManagerLX::displayRegisterMenu()
 
 void UIManagerLX::displayServiceSelectionMenu()
 {
+    system("cls");
     cout << "请选择要进入的服务：" << endl;
     cout << "1. QQ服务" << endl;
     cout << "2. 微信服务" << endl;
@@ -131,41 +145,58 @@ void UIManagerLX::displayServiceSelectionMenu()
     int choice;
     cin >> choice;
 
-    string username = "当前登录用户名"; // 假设存储了登录用户信息
     string nickname;
+    string id;
     switch (choice)
     {
     case 1:
-        cout << "进入QQ服务。" << endl;
+        currentService = "QQ";
         pageStack.push("Service Menu");
         break;
     case 2:
-        if (!serviceManager->isServiceEnabled(username, "WeChat"))
+        currentService = "WeChat";
+        if (!serviceManager->isServiceEnabled(loggedInUser, currentService))
         {
-            cout << "未开通微信服务，请输入昵称以注册：";
+            cout << "未开通微信服务，请输入服务ID：";
+            cin >> id;
+            cout << "请输入昵称：";
             cin >> nickname;
-            serviceManager->registerService(username, "WeChat", true, nickname);
+            serviceManager->registerService(loggedInUser, currentService, true, nickname);
+
+            database->saveServices(serviceManager);
+
             logger->log("用户开通了微信服务。");
             cout << "微信服务开通成功！" << endl;
         }
         pageStack.push("Service Menu");
         break;
     case 3:
-        if (!serviceManager->isServiceEnabled(username, "MicroA"))
+        currentService = "MicroA";
+        if (!serviceManager->isServiceEnabled(loggedInUser, currentService))
         {
-            cout << "未开通微A服务，将直接使用QQ ID注册。" << endl;
-            serviceManager->registerService(username, "MicroA", false, "");
+            cout << "未开通微A服务，请输入昵称：";
+            cin >> nickname;
+            serviceManager->registerService(loggedInUser, currentService, false, nickname);
+
+            database->saveServices(serviceManager);
+
             logger->log("用户开通了微A服务。");
             cout << "微A服务开通成功！" << endl;
         }
         pageStack.push("Service Menu");
         break;
     case 4:
-        if (!serviceManager->isServiceEnabled(username, "MicroB"))
+        currentService = "MicroB";
+        if (!serviceManager->isServiceEnabled(loggedInUser, currentService))
         {
-            cout << "未开通微B服务，请输入昵称以注册：";
+            cout << "未开通微B服务，请输入服务ID：";
+            cin >> id;
+            cout << "请输入昵称：";
             cin >> nickname;
-            serviceManager->registerService(username, "MicroB", true, nickname);
+            serviceManager->registerService(loggedInUser, currentService, true, nickname);
+
+            database->saveServices(serviceManager);
+
             logger->log("用户开通了微B服务。");
             cout << "微B服务开通成功！" << endl;
         }
@@ -182,7 +213,8 @@ void UIManagerLX::displayServiceSelectionMenu()
 
 void UIManagerLX::displayServiceMenu()
 {
-    cout << "欢迎进入服务菜单！" << endl;
+    system("cls");
+    cout << "欢迎进入 " << currentService << " 服务菜单！" << endl;
     cout << "1. 查看个人信息" << endl;
     cout << "2. 查看好友列表" << endl;
     cout << "3. 查看群组信息" << endl;
@@ -193,15 +225,24 @@ void UIManagerLX::displayServiceMenu()
     switch (choice)
     {
     case 1:
-        // 调用具体服务的个人信息显示逻辑
+        cout << "个人信息：" << endl;
+        cout << "昵称: " << serviceManager->getService(currentService)->getNickname(loggedInUser) << endl;
         logger->log("用户查看了个人信息。");
         break;
     case 2:
-        // 调用具体服务的好友列表显示逻辑
+        cout << "好友列表：" << endl;
+        for (const string& friendID : serviceManager->getService(currentService)->getFriends(loggedInUser))
+        {
+            cout << friendID << endl;
+        }
         logger->log("用户查看了好友列表。");
         break;
     case 3:
-        // 调用具体服务的群组信息显示逻辑
+        cout << "群组信息：" << endl;
+        for (int groupID : serviceManager->getService(currentService)->getGroups(loggedInUser))
+        {
+            cout << "群组ID: " << groupID << endl;
+        }
         logger->log("用户查看了群组信息。");
         break;
     case 4:
@@ -209,6 +250,70 @@ void UIManagerLX::displayServiceMenu()
         break;
     default:
         cout << "无效选项，请重新选择。" << endl;
+        break;
+    }
+}
+
+void UIManagerLX::displayUserManagementMenu()
+{
+    system("cls");
+    cout << "\n===== 用户管理菜单 =====" << endl;
+    cout << "1. 添加用户" << endl;
+    cout << "2. 移除用户" << endl;
+    cout << "3. 显示所有用户" << endl;
+    cout << "0. 返回主菜单" << endl;
+    cout << "=======================" << endl;
+    cout << "请输入选项: ";
+    int choice;
+    cin >> choice;
+
+    switch (choice)
+    {
+    case 1:
+        // 调用添加用户逻辑
+        break;
+    case 2:
+        // 调用移除用户逻辑
+        break;
+    case 3:
+        // 调用显示所有用户逻辑
+        break;
+    case 0:
+        return;
+    default:
+        cout << "无效选项，请重试。" << endl;
+        break;
+    }
+}
+
+void UIManagerLX::displayGroupManagementMenu()
+{
+    system("cls");
+    cout << "\n===== 群组管理菜单 =====" << endl;
+    cout << "1. 创建群组" << endl;
+    cout << "2. 解散群组" << endl;
+    cout << "3. 显示所有群组" << endl;
+    cout << "0. 返回主菜单" << endl;
+    cout << "=======================" << endl;
+    cout << "请输入选项: ";
+    int choice;
+    cin >> choice;
+
+    switch (choice)
+    {
+    case 1:
+        // 调用创建群组逻辑
+        break;
+    case 2:
+        // 调用解散群组逻辑
+        break;
+    case 3:
+        // 调用显示所有群组逻辑
+        break;
+    case 0:
+        return;
+    default:
+        cout << "无效选项，请重试。" << endl;
         break;
     }
 }

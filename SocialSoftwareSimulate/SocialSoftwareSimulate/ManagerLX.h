@@ -10,7 +10,8 @@
 using namespace std;
 
 // 用户管理类
-class UserManagerLX {
+class UserManagerLX
+{
 private:
     map<string, UserLX> users; // 用户ID -> 用户实例
 
@@ -41,7 +42,8 @@ public:
 };
 
 // 基类：群聊管理类
-class GroupManagerLX {
+class GroupManagerLX
+{
 protected:
     map<int, vector<string>> groups; // 群组ID -> 群成员列表
 
@@ -71,7 +73,8 @@ public:
 };
 
 // 派生类：QQ群聊管理类
-class QQGroupManagerLX : public GroupManagerLX {
+class QQGroupManagerLX : public GroupManagerLX
+{
 private:
     map<int, vector<string>> groupAdmins; // 群组ID -> 管理员列表
 
@@ -90,14 +93,16 @@ public:
 };
 
 // 派生类：微信群聊管理类
-class WXGroupManagerLX : public GroupManagerLX {
+class WXGroupManagerLX : public GroupManagerLX
+{
 public:
     // 展示所有群组
     void displayAllGroups() const override;
 };
 
 // 基类：服务管理类
-class ServiceManagerLX {
+class ServiceManagerLX
+{
 protected:
     map<string, ServiceLX*> services; // 服务名称 -> 服务实例
 
@@ -127,13 +132,15 @@ public:
 };
 
 // 派生类：QQ服务管理类
-class QQServiceManagerLX : public ServiceManagerLX {
+class QQServiceManagerLX : public ServiceManagerLX
+{
 public:
     void displayAllServices() const override;
 };
 
 // 派生类：微信服务管理类
-class WXServiceManagerLX : public ServiceManagerLX {
+class WXServiceManagerLX : public ServiceManagerLX
+{
 public:
     void displayAllServices() const override;
 };
